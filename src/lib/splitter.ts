@@ -1,7 +1,8 @@
 export function splitSections(content: string): Array<{ content: string; name: string; }> {
   // Regex to match <paperaj-NAME> ... </paperaj-NAME>
-  // Case insensitive for the tag name, assuming simple alphanumeric + dashes
-  const regex = /<paperaj-([a-zA-Z0-9_-]+)>([\s\S]*?)<\/paperaj-\1>/g;
+  // Also matches Pandoc's escaped version: \textless paperaj-NAME\textgreater ... \textless /paperaj-NAME\textgreater
+  // And potential simple escapes like \< ... \>
+  const regex = /(?:<|\\textless |\\<)paperaj-([a-zA-Z0-9_-]+)(?:>|\\textgreater|\\>)([\s\S]*?)(?:<|\\textless |\\<)\/paperaj-\1(?:>|\\textgreater|\\>)/g;
   const sections: Array<{ content: string; name: string; }> = [];
   let match;
 

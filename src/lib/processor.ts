@@ -2,6 +2,8 @@
  * Port of images.py to Node.js
  * Handles Latex post-processing for captions, figures, tables, and references.
  */
+/* eslint-disable complexity */
+ 
 export function processLatex(content: string): string {
     const lines = content.split('\n');
     const toWrite: string[] = [];

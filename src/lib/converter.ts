@@ -11,15 +11,20 @@ export class PandocService {
 
     async convertDocxToMarkdown(
         docxPath: string,
-        mediaDir: string
+        mediaDir: string,
+        dryRun = false
     ): Promise<string> {
         const args = [
-            '--extract-media', mediaDir,
             '-s',
             '--wrap=preserve',
             '-t', 'markdown',
             docxPath
         ];
+
+        // Only extract media if not in dry-run mode
+        if (!dryRun) {
+            args.unshift('--extract-media', mediaDir);
+        }
 
         return this.runPandoc(args);
     }
@@ -51,10 +56,11 @@ export class PandocService {
             });
 
             p.on('close', (code) => {
-                if (code === 0) {
-                    resolve(stdout);
-                } else {
+                // eslint-disable-next-line unicorn/no-negated-condition
+                if (code !== 0) {
                     reject(new Error(`Pandoc failed with code ${code}: ${stderr}`));
+                } else {
+                    resolve(stdout);
                 }
             });
 

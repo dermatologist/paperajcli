@@ -19,6 +19,11 @@ The tool relies on `pandoc` being installed on the system.
 - The processor rewrites image paths to be relative (e.g., `media/image1.png`) so LaTeX compilers can find them.
 - It preserves the custom caption handling logic from `images.py`, including support for `TWOCOLUMN` and `LATEXROTATE` flags in captions.
 
+## Enhancements
+- **Dry Run**: Added `--dry-run` flag to preview the splitting operations without performing disk writes or media extraction.
+- **Robustness**: Splitter logic handles both XML-style tags (`<tag>`) and Pandoc-escaped tags (`\textless tag \textgreater`), making it resilient to DOCX round-tripping.
+- **Integration**: Generated `.tex` files are designed to be included in a master LaTeX document using `\input{filepath/filename}`.
+
 ## Dependencies
 
 - **Node.js**: >= 18.0.0
@@ -26,6 +31,5 @@ The tool relies on `pandoc` being installed on the system.
 - **OcLif**: The CLI framework used.
 
 ## Future Improvements
-- Add a `--dry-run` flag to preview sections without writing files.
 - Add support for custom delimiter patterns via flags.
 - Bundle a WASM version of Pandoc to remove the system dependency (though complex for media extraction).

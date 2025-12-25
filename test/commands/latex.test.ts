@@ -1,17 +1,19 @@
 
 import {runCommand} from '@oclif/test'
 import {expect} from 'chai'
-import * as fs from 'node:fs'
-import * as os from 'node:os'
-import * as path from 'node:path'
+import fs from 'node:fs'
+import os from 'node:os'
+import path from 'node:path'
 import * as sinon from 'sinon'
 
 import {pandoc} from '../../src/lib/converter.js'
 
 describe('latex command', () => {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     let originalCheck: any;
     let originalConvertDocx: any;
     let originalConvertMarkdown: any;
+    /* eslint-enable @typescript-eslint/no-explicit-any */
 
     let tmpDir: string;
     let inputFile: string;
@@ -49,6 +51,8 @@ describe('latex command', () => {
         } catch {
             // ignore
         }
+
+        sinon.restore(); // Keep sinon restore even if we removed sinon usage for mocks, just in case
     });
 
     it('runs latex command successfully', async () => {

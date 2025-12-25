@@ -30,7 +30,7 @@ The primary command is `latex`.
 
 ```bash
 # Syntax
-./bin/run.js latex <input-file> <output-directory>
+./bin/run.js latex <input-file> <output-directory> [flags]
 
 # Example
 ./bin/run.js latex tests/paperaj.docx output/
@@ -39,9 +39,25 @@ The primary command is `latex`.
 ### Arguments
 
 - `file`: Path to the MS-Word (`.docx`) file to convert.
-- `outputDir`: Directory where the resulting `.tex` files and `media/` folder will be verified.
+- `outputDir`: Directory where the resulting `.tex` files and `media/` folder will be saved.
 
-### Input Format
+### Flags
+
+- `--dry-run` (`-d`): Preview the actions (converting, splitting) without writing any files to disk. Useful for verifying section detection.
+- `--help`: Show CLI help.
+
+### Integrating Generated Files
+
+The tool regenerates modular LaTeX files (e.g., `introduction.tex`, `methods.tex`). You can include these in your master LaTeX template using:
+
+```latex
+\input{output/introduction}
+\input{output/methods}
+```
+
+The tool handles figure and table environments automatically based on the input document structure.
+
+## Input Format
 
 The MS-Word document should contain delimiters for sections if you want modular output:
 
