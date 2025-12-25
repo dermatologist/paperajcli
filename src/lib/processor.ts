@@ -151,7 +151,7 @@ export function processLatex(content: string): string {
       // Math in separate lines \begin{equation}...\end{equation}
       // Inline math \begin{math}...\end{math}
       if (line.includes(String.raw`\textbackslash`)) {
-        line = line.replace(/\\textbackslash\s+((?:cite|href|url|ref|label|qquad|frac|begin|end)[a-zA-Z0-9]*)/g, '\\$1')
+        line = line.replaceAll(/\\textbackslash\s+((?:cite|href|url|ref|label|qquad|frac|begin|end)[a-zA-Z0-9]*)/g, String.raw`\$1`)
       }
 
       if (line.includes(' -/-/- ')) {

@@ -76,14 +76,42 @@ describe('latex command', () => {
     it('correctly reverts escaped latex commands', async () => {
         // Override mock for this test
         pandoc.convertDocxToMarkdown = async () => '<paperaj-section>\nContent\n</paperaj-section>';
-        pandoc.convertMarkdownToLatex = async () => 'See \\textbackslash cite{ref1} and \\textbackslash href{url}{link}';
+        pandoc.convertMarkdownToLatex = async () => String.raw`See \textbackslash cite{ref1} and \textbackslash href{url}{link}`;
 
         await runCommand(`latex ${inputFile} ${outputDir}`)
 
         const outputFile = path.join(outputDir, 'section.tex');
         const content = fs.readFileSync(outputFile, 'utf8');
-        expect(content).to.contain('\\cite{ref1}');
-        expect(content).to.contain('\\href{url}{link}');
-        expect(content).to.not.contain('\\textbackslash cite');
+        expect(content).to.contain(String.raw`\cite{ref1}`);
+        expect(content).to.contain(String.raw`\href{url}{link}`);
+        expect(content).to.not.contain(String.raw`\textbackslash cite`);
+    })
+
+    it('respects --no-extract-media flag', async () => {
+        /* eslint-disable @typescript-eslint/no-explicit-any */
+        let capturedArgs: any[] = [];
+        pandoc.convertDocxToMarkdown = async (...args: any[]) => {
+            capturedArgs = args;
+            return '<paperaj-test>Content</paperaj-test>';
+        };
+        /* eslint-enable @typescript-eslint/no-explicit-any */
+
+        await runCommand(`latex ${inputFile} ${outputDir} --no-extract-media`)
+
+        expect(capturedArgs[3]).to.be.false; // extractMedia param
+    })
+
+    it('defaults to extracting media', async () => {
+        /* eslint-disable @typescript-eslint/no-explicit-any */
+        let capturedArgs: any[] = [];
+        pandoc.convertDocxToMarkdown = async (...args: any[]) => {
+            capturedArgs = args;
+            return '<paperaj-test>Content</paperaj-test>';
+        };
+        /* eslint-enable @typescript-eslint/no-explicit-any */
+
+        await runCommand(`latex ${inputFile} ${outputDir}`)
+
+        expect(capturedArgs[3]).to.be.true; // extractMedia param (default)
     })
 })
