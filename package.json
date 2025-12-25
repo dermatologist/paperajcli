@@ -70,7 +70,8 @@
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "echo 'npm run lint'",
     "prepack": "oclif manifest && oclif readme",
-    "test": "mocha --forbid-only \"test/**/*.test.ts\"",
+    "testall": "mocha --forbid-only \"test/**/*.test.ts\"",
+    "test": "mocha --forbid-only \"test/**/!(*.e2e).test.ts\"",
     "docs": "typedoc --exclude src/tool.ts --html docs src",
     "version": "oclif readme && git add README.md"
   },
