@@ -3,7 +3,7 @@
  * Handles Latex post-processing for captions, figures, tables, and references.
  */
 /* eslint-disable complexity */
- 
+
 export function processLatex(content: string): string {
     const lines = content.split('\n');
     const toWrite: string[] = [];
@@ -137,6 +137,11 @@ export function processLatex(content: string): string {
         }
 
         // --- Misc Replacements ---
+
+        // Revert escaped LaTeX commands like \cite, \href
+        if (line.includes(String.raw`\textbackslash`)) {
+             line = line.replace(/\\textbackslash\s+((?:cite|href|url|ref|label)[a-zA-Z0-9]*)/g, '\\$1');
+        }
 
         if (line.includes(' -/-/- ')) {
             line = line.replace(' -/-/- ', ' --- ');

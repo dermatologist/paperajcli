@@ -72,4 +72,18 @@ describe('latex command', () => {
         const content = fs.readFileSync(outputFile, 'utf8');
         expect(content).to.contain(String.raw`\label{Figure_1}`);
     })
+
+    it('correctly reverts escaped latex commands', async () => {
+        // Override mock for this test
+        pandoc.convertDocxToMarkdown = async () => '<paperaj-section>\nContent\n</paperaj-section>';
+        pandoc.convertMarkdownToLatex = async () => 'See \\textbackslash cite{ref1} and \\textbackslash href{url}{link}';
+
+        await runCommand(`latex ${inputFile} ${outputDir}`)
+
+        const outputFile = path.join(outputDir, 'section.tex');
+        const content = fs.readFileSync(outputFile, 'utf8');
+        expect(content).to.contain('\\cite{ref1}');
+        expect(content).to.contain('\\href{url}{link}');
+        expect(content).to.not.contain('\\textbackslash cite');
+    })
 })
