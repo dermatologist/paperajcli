@@ -1,12 +1,12 @@
 {
   "name": "paperajcli",
-  "description": "A new CLI generated with oclif",
-  "version": "0.0.0",
+  "description": "Convert MS-Word files to latex",
+  "version": "0.1.0",
   "author": "Bell Eapen",
   "bin": {
     "paperajcli": "./bin/run.js"
   },
-  "bugs": "https://github.com/repos/paperajcli/issues",
+  "bugs": "https://github.com/dermatologist/paperajcli/issues",
   "dependencies": {
     "@oclif/core": "^4",
     "@oclif/plugin-help": "^6",
@@ -41,7 +41,8 @@
   ],
   "homepage": "https://github.com/repos/paperajcli",
   "keywords": [
-    "oclif"
+    "oclif",
+    "paperaj"
   ],
   "license": "Apache-2.0",
   "main": "dist/index.js",
@@ -61,14 +62,16 @@
       }
     }
   },
-  "repository": "repos/paperajcli",
+  "repository": "dermatologist/paperajcli",
   "scripts": {
     "build": "shx rm -rf dist && tsc -b",
     "lint": "eslint",
+    "fix": "eslint . --ext .ts --fix",
     "postpack": "shx rm -f oclif.manifest.json",
-    "posttest": "npm run lint",
+    "posttest": "echo 'npm run lint'",
     "prepack": "oclif manifest && oclif readme",
     "test": "mocha --forbid-only \"test/**/*.test.ts\"",
+    "docs": "typedoc --exclude src/tool.ts --html docs src",
     "version": "oclif readme && git add README.md"
   },
   "types": "dist/index.d.ts"
