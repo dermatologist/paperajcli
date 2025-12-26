@@ -1,6 +1,38 @@
-# paperajcli
+## 📄 Paperajcli: A Lightweight Bridge from Word to LaTeX
 
-A CLI tool to convert MS-Word documents to modular LaTeX files, tailored for paperaj workflows.
+Microsoft Word remains the de facto tool for collaborative academic writing—whether you're drafting manuscripts with co‑authors or assembling a thesis with committee feedback. While Pandoc can convert Word documents into LaTeX, integrating journal or thesis templates and managing citations often becomes cumbersome. Paperajcli solves this gap by offering a simple, structured way to export Word sections directly into LaTeX‑ready components.
+
+Paperajcli works by detecting custom delimiters inside your `.docx` file and exporting each marked section into its own LaTeX file. For example, a Word document containing blocks like ([See example](test/paperaj.docx)):
+
+```
+<paperaj-introduction>
+This is the introduction section content.
+</paperaj-introduction>
+
+<paperaj-methods>
+Methods go here...
+</paperaj-methods>
+```
+
+will produce clean, modular LaTeX files (e.g., `introduction.tex`, `methods.tex`) in an output directory of your choice. These files can be seamlessly included in any LaTeX template using commands such as:
+
+```
+\section{Methods}
+\input{myfolder/methods.tex}
+```
+
+✨ Paperajcli preserves commonly used LaTeX commands—including `\cite{}`—so you can rely on native LaTeX citation workflows without extra tooling. This makes it ideal for users who prefer Zotero, JabRef, or other BibTeX‑based reference managers.
+
+## 🚀 Recommended Workflow
+
+1. **Clone** a LaTeX project template from Overleaf (journal or thesis).
+2. **Run Paperajcli** to export your Word sections into a directory inside the template.
+3. **Insert** each exported `.tex` file into the appropriate location using `\input{}`.
+4. **Manage citations** in Zotero and export your references as a `.bib` file.
+5. **Add** the `.bib` file to your repository and push the project back to Overleaf.
+6. **Compile** the document and perform a final readability pass.
+
+This workflow keeps the collaborative convenience of Word while giving you the precision, structure, and template‑compatibility of LaTeX—without the usual friction. 🎉 Please ⭐️ If you find this project useful!
 
 ## Prerequisites
 
@@ -20,6 +52,9 @@ cd paperajcli
 # Install dependencies
 npm install
 
+# Build the project
+npm run build
+
 # Link the CLI (optional, for local development)
 npm link
 ```
@@ -30,10 +65,10 @@ The primary command is `latex`.
 
 ```bash
 # Syntax
-./bin/run.js latex <input-file> <output-directory> [flags]
+paperajcli latex <input-file> <output-directory> [flags]
 
 # Example
-./bin/run.js latex tests/paperaj.docx output/
+paperajcli latex tests/paperaj.docx output/
 ```
 
 ### Arguments
@@ -44,6 +79,7 @@ The primary command is `latex`.
 ### Flags
 
 - `--dry-run` (`-d`): Preview the actions (converting, splitting) without writing any files to disk. Useful for verifying section detection.
+- `--extract-media` / `--no-extract-media`: Control media extraction from DOCX (default: `true`). Use `--no-extract-media` to skip extracting images and other media files.
 - `--help`: Show CLI help.
 
 ### Integrating Generated Files
@@ -57,23 +93,31 @@ The tool regenerates modular LaTeX files (e.g., `introduction.tex`, `methods.tex
 
 The tool handles figure and table environments automatically based on the input document structure.
 
-## Input Format
+## Post-Processing
 
-The MS-Word document should contain delimiters for sections if you want modular output:
+The tool performs several post-processing operations on the generated LaTeX:
 
-```text
-First part of text...
+### LaTeX Command Preservation
+You can use LaTeX commands directly in your MS-Word document, and they will be preserved in the output:
+- `\cite{reference}` - Citations
+- `\href{url}{text}` - Hyperlinks
+- `\ref{label}` - Cross-references
+- `\label{name}` - Labels
+- Math commands like `\frac{}{}`, `\begin{equation}`, etc.
 
-<paperaj-introduction>
-This is the introduction section content.
-</paperaj-introduction>
+These commands will be automatically un-escaped during conversion.
 
-<paperaj-methods>
-Methods go here...
-</paperaj-methods>
-```
+### Figure and Table Handling
+- **Figure captions**: Use format `Figure 1: Caption Text` in Word
+  - Add `: TWOCOLUMN` for two-column figures (`figure*` environment)
+  - Add `: LATEXROTATE` for rotated figures (`sidewaysfigure` environment)
+- **Table captions**: Use format `Table 1: Caption Text` in Word
+- **Cross-references**: References like `Figure_1`, `Table_2`, `Appendix_A` are automatically converted to `\ref{}` commands
 
-This will generate `introduction.tex` and `methods.tex` in the output directory. Caption special handling (e.g., `Figure 1: Title: TWOCOLUMN`) is supported as per legacy scripts.
+### Special Character Handling
+- Escaped braces `\{` and `\}` are converted to regular braces
+- `et al.` is automatically removed
+- Triple dashes `-/-/-` are converted to em-dashes `---`
 
 ## Testing
 
@@ -82,3 +126,11 @@ Run unit and integration tests:
 ```bash
 npm test
 ```
+
+## Contributing
+
+Pull requests are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Contributors
+
+- [Bell Eapen](https://nuchange.ca) [![Twitter Follow](https://img.shields.io/twitter/follow/beapen?style=social)](https://twitter.com/beapen)

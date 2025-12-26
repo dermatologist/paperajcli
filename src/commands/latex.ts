@@ -18,6 +18,7 @@ static override examples = [
   ]
 static override flags = {
     'dry-run': Flags.boolean({char: 'd', description: 'Preview actions without writing files or extracting media'}),
+    'extract-media': Flags.boolean({allowNo: true, default: true, description: 'Extract media from DOCX'}),
   }
 
   public async run(): Promise<void> {
@@ -25,6 +26,8 @@ static override flags = {
     const docxPath = path.resolve(args.file)
     const outputDir = path.resolve(args.outputDir)
     const dryRun = flags['dry-run']
+
+    const extractMedia = flags['extract-media']
 
     this.log(`Processing file: ${docxPath}`)
     this.log(`Output directory: ${outputDir} ${dryRun ? '(DRY RUN)' : ''}`)
@@ -42,7 +45,7 @@ static override flags = {
         }
 
         const mediaDir = path.join(outputDir, 'media')
-        if (!fs.existsSync(mediaDir)) {
+        if (extractMedia && !fs.existsSync(mediaDir)) {
           fs.mkdirSync(mediaDir, {recursive: true})
         }
     }
@@ -51,7 +54,7 @@ static override flags = {
     this.log('Converting DOCX to Markdown and extracting media...')
     let markdown = ''
     try {
-      markdown = await pandoc.convertDocxToMarkdown(docxPath, outputDir, dryRun)
+      markdown = await pandoc.convertDocxToMarkdown(docxPath, outputDir, dryRun, extractMedia)
     } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       this.error(`Failed during DOCX conversion: ${error.message}`)
     }

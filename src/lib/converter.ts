@@ -12,7 +12,8 @@ export class PandocService {
     async convertDocxToMarkdown(
         docxPath: string,
         mediaDir: string,
-        dryRun = false
+        dryRun = false,
+        extractMedia = true
     ): Promise<string> {
         const args = [
             '-s',
@@ -21,8 +22,8 @@ export class PandocService {
             docxPath
         ];
 
-        // Only extract media if not in dry-run mode
-        if (!dryRun) {
+        // Only extract media if not in dry-run mode and extraction is requested
+        if (!dryRun && extractMedia) {
             args.unshift('--extract-media', mediaDir);
         }
 
