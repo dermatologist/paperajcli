@@ -21,7 +21,7 @@ will produce clean, modular LaTeX files (e.g., `introduction.tex`, `methods.tex`
 \input{myfolder/methods.tex}
 ```
 
-✨ Paperajcli preserves commonly used LaTeX commands—including `\cite{}`—so you can rely on native LaTeX citation workflows without extra tooling. This makes it ideal for users who prefer Zotero, JabRef, or other BibTeX‑based reference managers.
+✨ Paperajcli preserves commonly used LaTeX commands—including `\cite{}`—so you can rely on native LaTeX citation workflows without extra tooling. This makes it ideal for users who prefer Zotero, JabRef, or other BibTeX‑based reference managers. Use [this csl](/word2latex-pandoc.csl) with Zotero to ensure compatibility with Pandoc's citation processing. After exporting your sections, simply add your `.bib` file to your LaTeX project and compile as usual using any citation package (e.g., `natbib`, `biblatex`) and style.
 
 ## 🚀 Recommended Workflow
 

@@ -3,10 +3,12 @@ import {expect} from 'chai'
 import {splitSections} from '../../src/lib/splitter.js'
 
 describe('splitter', () => {
-  it('should return empty list when no delimiters found', () => {
+  it('should return whole content as "document" when no delimiters found', () => {
     const input = 'Some random content'
     const result = splitSections(input)
-    expect(result).to.be.empty
+    expect(result).to.have.length(1)
+    expect(result[0].name).to.equal('document')
+    expect(result[0].content).to.equal('Some random content')
   })
 
   it('should split single section', () => {
