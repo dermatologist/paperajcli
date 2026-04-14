@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "author": "Bell Eapen",
   "bin": {
-    "paperajcli": "./bin/run.js"
+    "paperajcli": "bin/run.js"
   },
   "bugs": "https://github.com/dermatologist/paperajcli/issues",
   "dependencies": {
@@ -62,7 +62,10 @@
       }
     }
   },
-  "repository": "dermatologist/paperajcli",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dermatologist/paperajcli.git"
+  },
   "scripts": {
     "build": "shx rm -rf dist && tsc -b",
     "lint": "eslint",
