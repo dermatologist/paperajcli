@@ -2,7 +2,7 @@
 
 Microsoft Word remains the de facto tool for collaborative academic writing—whether you're drafting manuscripts with co‑authors or assembling a thesis with committee feedback. While Pandoc can convert Word documents into LaTeX, integrating journal or thesis templates and managing citations often becomes cumbersome. Paperajcli solves this gap by offering a simple, structured way to export Word sections directly into **LaTeX components** using [pandoc](https://pandoc.org/installing.html).
 
-Paperajcli works by detecting custom delimiters inside your `.docx` file and exporting each marked section into its own LaTeX file. For example, a Word document containing blocks like below:
+Paperajcli works by detecting custom delimiters inside your `.docx` file and exporting each marked section into its own LaTeX file. For example, [a Word document](/test/paperaj.docx) containing blocks like below:
 
 ```
 <paperaj-introduction>
