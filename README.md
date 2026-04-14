@@ -1,23 +1,26 @@
 ## 📄 Paperajcli: A Lightweight Bridge from Word to LaTeX
 
-Microsoft Word remains the de facto tool for collaborative academic writing—whether you're drafting manuscripts with co‑authors or assembling a thesis with committee feedback. While Pandoc can convert Word documents into LaTeX, integrating journal or thesis templates and managing citations often becomes cumbersome. Paperajcli solves this gap by offering a simple, structured way to export Word sections directly into LaTeX‑ready components.
+Microsoft Word remains the de facto tool for collaborative academic writing—whether you're drafting manuscripts with co‑authors or assembling a thesis with committee feedback. While Pandoc can convert Word documents into LaTeX, integrating journal or thesis templates and managing citations often becomes cumbersome. Paperajcli solves this gap by offering a simple, structured way to export Word sections directly into **LaTeX components** using [pandoc](https://pandoc.org/installing.html).
 
-Paperajcli works by detecting custom delimiters inside your `.docx` file and exporting each marked section into its own LaTeX file. For example, a Word document containing blocks like ([See example](test/paperaj.docx)):
+Paperajcli works by detecting custom delimiters inside your `.docx` file and exporting each marked section into its own LaTeX file. For example, a Word document containing blocks like below:
 
 ```
 <paperaj-introduction>
+Introduction
+
 This is the introduction section content.
 </paperaj-introduction>
 
 <paperaj-methods>
+Methods
+
 Methods go here...
 </paperaj-methods>
 ```
 
-will produce clean, modular LaTeX files (e.g., `introduction.tex`, `methods.tex`) in an output directory of your choice. These files can be seamlessly included in any LaTeX template using commands such as:
+will produce clean, modular LaTeX files (e.g., `introduction.tex`, `methods.tex`) in an output directory of your choice. The formatting of these files will be preserved(e.g. H1 -> \section{} and H2 -> \subsection{}). These files can be seamlessly included in any LaTeX template using commands such as:
 
 ```
-\section{Methods}
 \input{myfolder/methods.tex}
 ```
 
@@ -43,6 +46,8 @@ This workflow keeps the collaborative convenience of Word while giving you the p
   - Linux: `sudo apt-get install pandoc`
 
 ## Installation
+
+Requires [pandoc](https://pandoc.org/installing.html) to be installed and available in your system PATH.
 
 ```bash
 # Clone the repository
