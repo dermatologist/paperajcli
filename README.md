@@ -28,12 +28,12 @@ will produce clean, modular LaTeX files (e.g., `introduction.tex`, `methods.tex`
 
 ## 🚀 Recommended Workflow
 
-1. **Clone** a LaTeX project template from Overleaf (journal or thesis).
+1. **Clone** a LaTeX project template from [Overleaf](https://www.overleaf.com/learn/how-to/Git_integration%23Cloning_your_project_as_a_local_repository).
 2. **Run Paperajcli** to export your Word sections into a directory inside the template.
 3. **Insert** each exported `.tex` file into the appropriate location using `\input{}`.
 4. **Manage citations** in Zotero and export your references as a `.bib` file.
 5. **Add** the `.bib` file to your repository and push the project back to Overleaf.
-6. **Compile** the document and perform a final readability pass.
+6. **Compile** the document.
 
 This workflow keeps the collaborative convenience of Word while giving you the precision, structure, and template‑compatibility of LaTeX—without the usual friction. 🎉 Please ⭐️ If you find this project useful!
 
