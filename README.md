@@ -45,24 +45,6 @@ This workflow keeps the collaborative convenience of Word while giving you the p
   - Windows: `choco install pandoc`
   - Linux: `sudo apt-get install pandoc`
 
-## Installation
-
-Requires [pandoc](https://pandoc.org/installing.html) to be installed and available in your system PATH.
-
-```bash
-# Clone the repository
-git clone <repo-url>
-cd paperajcli
-
-# Install dependencies
-npm install
-
-# Build the project
-npm run build
-
-# Link the CLI (optional, for local development)
-npm link
-```
 
 ## Usage
 
@@ -70,10 +52,10 @@ The primary command is `latex`.
 
 ```bash
 # Syntax
-paperajcli latex <input-file> <output-directory> [flags]
+npx paperajcli latex <input-file> <output-directory> [flags]
 
 # Example
-paperajcli latex tests/paperaj.docx output/
+npx paperajcli latex tests/paperaj.docx output/
 ```
 
 ### Arguments
