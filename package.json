@@ -1,7 +1,7 @@
 {
   "name": "paperajcli",
   "description": "Convert MS-Word files to latex",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Bell Eapen",
   "bin": {
     "paperajcli": "bin/run.js"
