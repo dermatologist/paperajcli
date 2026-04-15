@@ -1,397 +1,125 @@
-paperajcli
-=================
+## 📄 Paperajcli: A Lightweight Bridge from Word to LaTeX
 
-A new CLI generated with oclif
+Microsoft Word remains the de facto tool for collaborative academic writing—whether you're drafting manuscripts with co‑authors or assembling a thesis with committee feedback. While Pandoc can convert Word documents into LaTeX, integrating journal or thesis templates and managing citations often becomes cumbersome. Paperajcli solves this gap by offering a simple, structured way to export Word sections directly into **LaTeX components** using [pandoc](https://pandoc.org/installing.html).
 
+[![paperaj](https://github.com/dermatologist/paperaj/blob/develop/paperaj.drawio.svg)](https://github.com/dermatologist/paperaj/blob/develop/paperaj.drawio.svg)
 
-[![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/paperajcli.svg)](https://npmjs.org/package/paperajcli)
-[![Downloads/week](https://img.shields.io/npm/dw/paperajcli.svg)](https://npmjs.org/package/paperajcli)
-
-
-<!-- toc -->
-* [Usage](#usage)
-* [Commands](#commands)
-<!-- tocstop -->
-# Usage
-<!-- usage -->
-```sh-session
-$ npm install -g paperajcli
-$ paperajcli COMMAND
-running command...
-$ paperajcli (--version)
-paperajcli/0.0.0 darwin-arm64 node-v24.11.1
-$ paperajcli --help [COMMAND]
-USAGE
-  $ paperajcli COMMAND
-...
-```
-<!-- usagestop -->
-# Commands
-<!-- commands -->
-* [`paperajcli hello PERSON`](#paperajcli-hello-person)
-* [`paperajcli hello world`](#paperajcli-hello-world)
-* [`paperajcli help [COMMAND]`](#paperajcli-help-command)
-* [`paperajcli plugins`](#paperajcli-plugins)
-* [`paperajcli plugins add PLUGIN`](#paperajcli-plugins-add-plugin)
-* [`paperajcli plugins:inspect PLUGIN...`](#paperajcli-pluginsinspect-plugin)
-* [`paperajcli plugins install PLUGIN`](#paperajcli-plugins-install-plugin)
-* [`paperajcli plugins link PATH`](#paperajcli-plugins-link-path)
-* [`paperajcli plugins remove [PLUGIN]`](#paperajcli-plugins-remove-plugin)
-* [`paperajcli plugins reset`](#paperajcli-plugins-reset)
-* [`paperajcli plugins uninstall [PLUGIN]`](#paperajcli-plugins-uninstall-plugin)
-* [`paperajcli plugins unlink [PLUGIN]`](#paperajcli-plugins-unlink-plugin)
-* [`paperajcli plugins update`](#paperajcli-plugins-update)
-
-## `paperajcli hello PERSON`
-
-Say hello
+Paperajcli works by detecting custom delimiters inside your `.docx` file and exporting each marked section into its own LaTeX file. For example, [a Word document](/test/paperaj.docx) containing blocks like below:
 
 ```
-USAGE
-  $ paperajcli hello PERSON -f <value>
+<paperaj-introduction>
+Introduction
 
-ARGUMENTS
-  PERSON  Person to say hello to
+This is the introduction section content.
+</paperaj-introduction>
 
-FLAGS
-  -f, --from=<value>  (required) Who is saying hello
+<paperaj-methods>
+Methods
 
-DESCRIPTION
-  Say hello
-
-EXAMPLES
-  $ paperajcli hello friend --from oclif
-  hello friend from oclif! (./src/commands/hello/index.ts)
+Methods go here...
+</paperaj-methods>
 ```
 
-_See code: [src/commands/hello/index.ts](https://github.com/repos/paperajcli/blob/v0.0.0/src/commands/hello/index.ts)_
-
-## `paperajcli hello world`
-
-Say hello world
+will produce clean, modular LaTeX files (e.g., `introduction.tex`, `methods.tex`) in an output directory of your choice. The formatting of these files will be preserved(e.g. H1 -> \section{} and H2 -> \subsection{}). These files can be seamlessly included in any LaTeX template using commands such as:
 
 ```
-USAGE
-  $ paperajcli hello world
-
-DESCRIPTION
-  Say hello world
-
-EXAMPLES
-  $ paperajcli hello world
-  hello world! (./src/commands/hello/world.ts)
+\input{myfolder/methods.tex}
 ```
 
-_See code: [src/commands/hello/world.ts](https://github.com/repos/paperajcli/blob/v0.0.0/src/commands/hello/world.ts)_
+✨ Paperajcli preserves commonly used LaTeX commands—including `\cite{}`—so you can rely on native LaTeX citation workflows without extra tooling. This makes it ideal for users who prefer Zotero, JabRef, or other BibTeX‑based reference managers. Use [this csl](/word2latex-pandoc.csl) with Zotero to ensure compatibility with Pandoc's citation processing. After exporting your sections, simply add your `.bib` file to your LaTeX project and compile as usual using any citation package (e.g., `natbib`, `biblatex`) and style.
 
-## `paperajcli help [COMMAND]`
+## 🚀 Recommended Workflow
 
-Display help for paperajcli.
+1. **Clone** a LaTeX project template from [Overleaf](https://www.overleaf.com/learn/how-to/Git_integration%23Cloning_your_project_as_a_local_repository).
+2. **Run Paperajcli** to export your Word sections into a directory inside the template.
+3. **Insert** each exported `.tex` file into the appropriate location using `\input{}`.
+4. **Manage citations** in Zotero and export your references as a `.bib` file.
+5. **Add** the `.bib` file to your repository and push the project back to Overleaf.
+6. **Compile** the document.
 
-```
-USAGE
-  $ paperajcli help [COMMAND...] [-n]
+This workflow keeps the collaborative convenience of Word while giving you the precision, structure, and template‑compatibility of LaTeX—without the usual friction. 🎉 Please ⭐️ If you find this project useful!
 
-ARGUMENTS
-  [COMMAND...]  Command to show help for.
+## Prerequisites
 
-FLAGS
-  -n, --nested-commands  Include all nested commands in the output.
+- **Node.js**: version 18 or higher.
+- **Pandoc**: Must be installed and available in your system PATH.
+  - MacOS: `brew install pandoc`
+  - Windows: `choco install pandoc`
+  - Linux: `sudo apt-get install pandoc`
 
-DESCRIPTION
-  Display help for paperajcli.
-```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.36/src/commands/help.ts)_
+## Usage
 
-## `paperajcli plugins`
+The primary command is `latex`.
 
-List installed plugins.
+```bash
+# Syntax
+npx paperajcli latex <input-file> <output-directory> [flags]
 
-```
-USAGE
-  $ paperajcli plugins [--json] [--core]
-
-FLAGS
-  --core  Show core plugins.
-
-GLOBAL FLAGS
-  --json  Format output as json.
-
-DESCRIPTION
-  List installed plugins.
-
-EXAMPLES
-  $ paperajcli plugins
+# Example
+npx paperajcli latex tests/paperaj.docx output/
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.54/src/commands/plugins/index.ts)_
+### Arguments
 
-## `paperajcli plugins add PLUGIN`
+- `file`: Path to the MS-Word (`.docx`) file to convert.
+- `outputDir`: Directory where the resulting `.tex` files and `media/` folder will be saved.
 
-Installs a plugin into paperajcli.
+### Flags
 
-```
-USAGE
-  $ paperajcli plugins add PLUGIN... [--json] [-f] [-h] [-s | -v]
+- `--dry-run` (`-d`): Preview the actions (converting, splitting) without writing any files to disk. Useful for verifying section detection.
+- `--extract-media` / `--no-extract-media`: Control media extraction from DOCX (default: `true`). Use `--no-extract-media` to skip extracting images and other media files.
+- `--help`: Show CLI help.
 
-ARGUMENTS
-  PLUGIN...  Plugin to install.
+### Integrating Generated Files
 
-FLAGS
-  -f, --force    Force npm to fetch remote resources even if a local copy exists on disk.
-  -h, --help     Show CLI help.
-  -s, --silent   Silences npm output.
-  -v, --verbose  Show verbose npm output.
+The tool regenerates modular LaTeX files (e.g., `introduction.tex`, `methods.tex`). You can include these in your master LaTeX template using:
 
-GLOBAL FLAGS
-  --json  Format output as json.
-
-DESCRIPTION
-  Installs a plugin into paperajcli.
-
-  Uses npm to install plugins.
-
-  Installation of a user-installed plugin will override a core plugin.
-
-  Use the PAPERAJCLI_NPM_LOG_LEVEL environment variable to set the npm loglevel.
-  Use the PAPERAJCLI_NPM_REGISTRY environment variable to set the npm registry.
-
-ALIASES
-  $ paperajcli plugins add
-
-EXAMPLES
-  Install a plugin from npm registry.
-
-    $ paperajcli plugins add myplugin
-
-  Install a plugin from a github url.
-
-    $ paperajcli plugins add https://github.com/someuser/someplugin
-
-  Install a plugin from a github slug.
-
-    $ paperajcli plugins add someuser/someplugin
+```latex
+\input{output/introduction}
+\input{output/methods}
 ```
 
-## `paperajcli plugins:inspect PLUGIN...`
+The tool handles figure and table environments automatically based on the input document structure.
 
-Displays installation properties of a plugin.
+## Post-Processing
 
-```
-USAGE
-  $ paperajcli plugins inspect PLUGIN...
+The tool performs several post-processing operations on the generated LaTeX:
 
-ARGUMENTS
-  PLUGIN...  [default: .] Plugin to inspect.
+### LaTeX Command Preservation
+You can use LaTeX commands directly in your MS-Word document, and they will be preserved in the output:
+- `\cite{reference}` - Citations
+- `\href{url}{text}` - Hyperlinks
+- `\ref{label}` - Cross-references
+- `\label{name}` - Labels
+- Math commands like `\frac{}{}`, `\begin{equation}`, etc.
 
-FLAGS
-  -h, --help     Show CLI help.
-  -v, --verbose
+These commands will be automatically un-escaped during conversion.
 
-GLOBAL FLAGS
-  --json  Format output as json.
+### Figure and Table Handling
+- **Figure captions**: Use format `Figure 1: Caption Text` in Word
+  - Add `: TWOCOLUMN` for two-column figures (`figure*` environment)
+  - Add `: LATEXROTATE` for rotated figures (`sidewaysfigure` environment)
+- **Table captions**: Use format `Table 1: Caption Text` in Word
+- **Cross-references**: References like `Figure_1`, `Table_2`, `Appendix_A` are automatically converted to `\ref{}` commands
 
-DESCRIPTION
-  Displays installation properties of a plugin.
+### Special Character Handling
+- Escaped braces `\{` and `\}` are converted to regular braces
+- `et al.` is automatically removed
+- Triple dashes `-/-/-` are converted to em-dashes `---`
 
-EXAMPLES
-  $ paperajcli plugins inspect myplugin
-```
+## Testing
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.54/src/commands/plugins/inspect.ts)_
+Run unit and integration tests:
 
-## `paperajcli plugins install PLUGIN`
-
-Installs a plugin into paperajcli.
-
-```
-USAGE
-  $ paperajcli plugins install PLUGIN... [--json] [-f] [-h] [-s | -v]
-
-ARGUMENTS
-  PLUGIN...  Plugin to install.
-
-FLAGS
-  -f, --force    Force npm to fetch remote resources even if a local copy exists on disk.
-  -h, --help     Show CLI help.
-  -s, --silent   Silences npm output.
-  -v, --verbose  Show verbose npm output.
-
-GLOBAL FLAGS
-  --json  Format output as json.
-
-DESCRIPTION
-  Installs a plugin into paperajcli.
-
-  Uses npm to install plugins.
-
-  Installation of a user-installed plugin will override a core plugin.
-
-  Use the PAPERAJCLI_NPM_LOG_LEVEL environment variable to set the npm loglevel.
-  Use the PAPERAJCLI_NPM_REGISTRY environment variable to set the npm registry.
-
-ALIASES
-  $ paperajcli plugins add
-
-EXAMPLES
-  Install a plugin from npm registry.
-
-    $ paperajcli plugins install myplugin
-
-  Install a plugin from a github url.
-
-    $ paperajcli plugins install https://github.com/someuser/someplugin
-
-  Install a plugin from a github slug.
-
-    $ paperajcli plugins install someuser/someplugin
+```bash
+npm test
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.54/src/commands/plugins/install.ts)_
+## Contributing
 
-## `paperajcli plugins link PATH`
+Pull requests are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Links a plugin into the CLI for development.
+## Contributors
 
-```
-USAGE
-  $ paperajcli plugins link PATH [-h] [--install] [-v]
-
-ARGUMENTS
-  PATH  [default: .] path to plugin
-
-FLAGS
-  -h, --help          Show CLI help.
-  -v, --verbose
-      --[no-]install  Install dependencies after linking the plugin.
-
-DESCRIPTION
-  Links a plugin into the CLI for development.
-
-  Installation of a linked plugin will override a user-installed or core plugin.
-
-  e.g. If you have a user-installed or core plugin that has a 'hello' command, installing a linked plugin with a 'hello'
-  command will override the user-installed or core plugin implementation. This is useful for development work.
-
-
-EXAMPLES
-  $ paperajcli plugins link myplugin
-```
-
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.54/src/commands/plugins/link.ts)_
-
-## `paperajcli plugins remove [PLUGIN]`
-
-Removes a plugin from the CLI.
-
-```
-USAGE
-  $ paperajcli plugins remove [PLUGIN...] [-h] [-v]
-
-ARGUMENTS
-  [PLUGIN...]  plugin to uninstall
-
-FLAGS
-  -h, --help     Show CLI help.
-  -v, --verbose
-
-DESCRIPTION
-  Removes a plugin from the CLI.
-
-ALIASES
-  $ paperajcli plugins unlink
-  $ paperajcli plugins remove
-
-EXAMPLES
-  $ paperajcli plugins remove myplugin
-```
-
-## `paperajcli plugins reset`
-
-Remove all user-installed and linked plugins.
-
-```
-USAGE
-  $ paperajcli plugins reset [--hard] [--reinstall]
-
-FLAGS
-  --hard       Delete node_modules and package manager related files in addition to uninstalling plugins.
-  --reinstall  Reinstall all plugins after uninstalling.
-```
-
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.54/src/commands/plugins/reset.ts)_
-
-## `paperajcli plugins uninstall [PLUGIN]`
-
-Removes a plugin from the CLI.
-
-```
-USAGE
-  $ paperajcli plugins uninstall [PLUGIN...] [-h] [-v]
-
-ARGUMENTS
-  [PLUGIN...]  plugin to uninstall
-
-FLAGS
-  -h, --help     Show CLI help.
-  -v, --verbose
-
-DESCRIPTION
-  Removes a plugin from the CLI.
-
-ALIASES
-  $ paperajcli plugins unlink
-  $ paperajcli plugins remove
-
-EXAMPLES
-  $ paperajcli plugins uninstall myplugin
-```
-
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.54/src/commands/plugins/uninstall.ts)_
-
-## `paperajcli plugins unlink [PLUGIN]`
-
-Removes a plugin from the CLI.
-
-```
-USAGE
-  $ paperajcli plugins unlink [PLUGIN...] [-h] [-v]
-
-ARGUMENTS
-  [PLUGIN...]  plugin to uninstall
-
-FLAGS
-  -h, --help     Show CLI help.
-  -v, --verbose
-
-DESCRIPTION
-  Removes a plugin from the CLI.
-
-ALIASES
-  $ paperajcli plugins unlink
-  $ paperajcli plugins remove
-
-EXAMPLES
-  $ paperajcli plugins unlink myplugin
-```
-
-## `paperajcli plugins update`
-
-Update installed plugins.
-
-```
-USAGE
-  $ paperajcli plugins update [-h] [-v]
-
-FLAGS
-  -h, --help     Show CLI help.
-  -v, --verbose
-
-DESCRIPTION
-  Update installed plugins.
-```
-
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.54/src/commands/plugins/update.ts)_
-<!-- commandsstop -->
+- [Bell Eapen](https://nuchange.ca) [![Twitter Follow](https://img.shields.io/twitter/follow/beapen?style=social)](https://twitter.com/beapen)
