@@ -1,5 +1,7 @@
 ## 📄 Paperajcli: A Lightweight Bridge from Word to LaTeX
 
+[![npm downloads](https://img.shields.io/npm/dt/paperajcli)](https://www.npmjs.com/package/paperajcli)
+
 Microsoft Word remains the de facto tool for collaborative academic writing—whether you're drafting manuscripts with co‑authors or assembling a thesis with committee feedback. While Pandoc can convert Word documents into LaTeX, integrating journal or thesis templates and managing citations often becomes cumbersome. Paperajcli solves this gap by offering a simple, structured way to export Word sections directly into **LaTeX components** using [pandoc](https://pandoc.org/installing.html).
 
 [![paperaj](https://github.com/dermatologist/paperaj/blob/develop/paperaj.drawio.svg)](https://github.com/dermatologist/paperaj/blob/develop/paperaj.drawio.svg)
