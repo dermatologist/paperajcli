@@ -146,5 +146,5 @@ export function processLatex(content: string): string {
     toWrite.push(line)
   }
 
-  return toWrite.join('\n').replaceAll(/ et\.?\s*al\.?/g, '')
+  return toWrite.join('\n').replaceAll(/(^|\s)(?:et al\.|et\.\s+al\.?)\s*/gm, '$1')
 }
