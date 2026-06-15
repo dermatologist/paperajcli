@@ -95,6 +95,12 @@ describe('processor', () => {
     expect(result).to.equal('Smith showed that...')
   })
 
+  it('should remove "et. al" across line breaks (pandoc variant)', () => {
+    const input = 'Smith et.\nal showed that...'
+    const result = processLatex(input)
+    expect(result).to.equal('Smith showed that...')
+  })
+
   it('should replace special chars', () => {
     const input = String.raw`Text -/-/- Text \{ \}`
     const result = processLatex(input)

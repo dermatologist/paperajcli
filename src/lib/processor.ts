@@ -135,10 +135,6 @@ export function processLatex(content: string): string {
       line = line.replace(' -/-/- ', ' --- ')
     }
 
-    if (line.includes(' et al.')) {
-      line = line.replace(' et al.', '')
-    }
-
     if (line.includes(String.raw`\{`)) {
       line = line.replaceAll(String.raw`\{`, '{')
     }
@@ -150,5 +146,5 @@ export function processLatex(content: string): string {
     toWrite.push(line)
   }
 
-  return toWrite.join('\n')
+  return toWrite.join('\n').replaceAll(/(^|\s)(?:et al\.|et\.\s+al\.?)\s*/gm, '$1')
 }
